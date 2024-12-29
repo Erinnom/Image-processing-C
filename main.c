@@ -22,5 +22,6 @@ int main() {
 
     // Save the image
     save_image(image, "test2.bmp");
+    clear_memory();
     return 0;
 }
