@@ -24,7 +24,9 @@ Objective : free memory space
 Input : pointer to the memory to free
 */
 void free(void *ptr){
-    // Do nothing
+    if ((long int)ptr < (long int)mem + MAX_MEMORY_SIZE && (long int)ptr >=(long int) mem){
+        i = (long int) ptr - (long int) mem;
+    }
 }
 
 /*

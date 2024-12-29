@@ -2,10 +2,25 @@
 #include "traitement_image.c"
 
 int main() {
-    //dump_file("signature_white_bg.bmp", 'c', 200);
-    struct bmp_image *image = load_bmp("color.bmp");
-    //show_bmp(image);
+    // Load an image
+    struct image *image = load_image("color.bmp");
 
-    save_bmp(image, "color2.bmp");
+    // turn the image to gary
+
+    for (int i = 0; i < image->width; i++){
+        for (int j = 0; j < image->height; j++){
+            struct pixel *p = get_pixel(image,i,j);
+            int moy = (p->r + p->g + p->b)/3;
+
+            p->r = moy;
+            p->g = moy;
+            p->b = moy;
+
+            set_pixel(image,i,j,p);
+        }
+    }
+
+    // Save the image
+    save_image(image, "test2.bmp");
     return 0;
 }
