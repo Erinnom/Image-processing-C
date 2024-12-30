@@ -1,12 +1,7 @@
 #include "dump.c"
 #include "traitement_image.c"
 
-int main() {
-    // Load an image
-    struct image *image = load_image("color.bmp");
-
-    // turn the image to gary
-
+void color_to_gray(struct image *image){
     for (int i = 0; i < image->width; i++){
         for (int j = 0; j < image->height; j++){
             struct pixel *p = get_pixel(image,i,j);
@@ -19,6 +14,14 @@ int main() {
             set_pixel(image,i,j,p);
         }
     }
+}
+
+int main() {
+    // Load an image
+    struct image *image = load_image("color.bmp");
+
+    // turn the image to gary
+    color_to_gray(image);
 
     // Save the image
     save_image(image, "test2.bmp");

@@ -137,3 +137,44 @@ void save_image(struct image * image, char * file_name){
         fputc(image->data[i] & 0xff,file);
     }
 }
+
+/*
+Objective : create a new image
+Input : - long int width
+        - long int height
+Output : struct image
+*/
+struct image  * new_image(unsigned long int w, unsigned long int h){
+    struct image *image = malloc(sizeof(struct image));
+    image->width = w;
+    image->height = h;
+    image->size = 138 + w*h*3;
+    image->data = malloc(sizeof(int) * image->size);
+    image->data[0] = 'B';
+    image->data[1] = 'M';
+    image->data[10] = 138;
+
+    // define size metadata
+    for (int i = 0; i < 4; i++){
+        image->data[i+2] = image->size >> (8*i) & 0xff;
+    }
+
+    // define offset metadata
+    for (int i = 0; i < 4; i++){
+        image->data[i+10] = 138 >> (8*i) & 0xff;
+    }
+
+    // define width metadata
+    for (int i = 0; i < 4; i++){
+        image->data[i+18] = w >> (8*i) & 0xff;
+    }
+
+    // define height metadata
+    for (int i = 0; i < 4; i++){
+        image->data[i+22] = h >> (8*i) & 0xff;
+    }
+
+    // define bits per pixel metadata
+    for (int i = 0; i < 2; i++){
+        image->data[i+28] = 32 >> (8*i) & 0xff;
+    }
