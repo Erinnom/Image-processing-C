@@ -1,3 +1,5 @@
 *.bmp
 *.png
 *.out
+*.o
+*.txt
