@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 union image{
-    struct {
-        struct {
-            unsigned short draft;
+    struct bmp {
+        struct bmp_header {
+            unsigned short draft; // add an offset of 2 bytes to avoid byte de-alignment
             unsigned char signature[2];
             unsigned int file_size;
             unsigned short reserved1;
@@ -37,14 +37,26 @@ union image{
             unsigned int profile_size;
             unsigned int reserved;
         } header;
-        struct {
+        struct data{
             unsigned char data;
         } data;
     } bmp;
 
-    struct {
-
+    struct png {
+        struct png_header {
+            unsigned char signature[8];
+            unsigned int length;
+            unsigned char type[4];
+            unsigned int width;
+            unsigned int height;
+            unsigned char bit_depth;
+            unsigned char color_type;
+            unsigned char compression;
+            unsigned char filter;
+            unsigned char interlace;
+        }header;
     } png;
+
     unsigned char raw[1024*1024]; // 1Mo
 };
 
@@ -60,7 +72,7 @@ void load_bmp_image(char *file_name, union image *image){
     if(file == NULL){
         printf("Error : file not found");
     } else {
-        fread((image->raw+2),1,sizeof(*image),file);
+        fread((image->raw),1,sizeof(*image),file);
     }
     fclose(file);
 };
