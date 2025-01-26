@@ -107,7 +107,7 @@ void save_bmp_image(char *file_name, union image *image) {
   if (file == NULL) {
     printf("Error : file not found");
   } else {
-    fwrite((image->raw + 2), 1, sizeof(*image), file);
+    fwrite((image->raw + 2), 1, image->bmp.file_size, file);
   }
   fclose(file);
 };
