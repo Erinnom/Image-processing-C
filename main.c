@@ -1,9 +1,11 @@
 /*
 Objective : load image, edit image and save edited image.
 */
-
+#include <time.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include "ti.h"
+#include "math.h"
 
 void grayscale(union image *image) {
     for (int i = 0; i < image->bmp.width; i++){
@@ -18,11 +20,26 @@ void grayscale(union image *image) {
     }
 }
 
+void noise(union image *image,float weight) {
+    srand(time(NULL));
+    for (int i = 0; i < image->bmp.width; i++){
+        for(int j = 0; j < image->bmp.height; j++){
+
+            struct pixel pixel;
+            get_pixel(image,i,j,&pixel);
+            pixel.blue = min( pixel.blue+(rand()%0xff)*weight,255);
+            pixel.green = min(pixel.green+(rand()%0xff)*weight,255);
+            pixel.red = min(pixel.red+(rand()%0xff)*weight,255);
+            set_pixel(image,i,j,&pixel);
+        }
+    }
+}
+
 int main(int argc, char **argv){
     // Tests
-    char * file_name = "luffy2.bmp";
     union image image1;
-    load_bmp_image(file_name,&image1);
-    grayscale(&image1);
-    save_bmp_image("luffy2-gray.bmp",&image1);
+    load_bmp_image("chiffrement.bmp",&image1);
+    printf("\n");
+    noise(&image1,0.6);
+    save_bmp_image("new_image1.bmp", &image1);
 }
