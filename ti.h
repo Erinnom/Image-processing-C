@@ -47,6 +47,16 @@ struct pixel {
     unsigned char alpha;
 };
 
+union pixel2 {
+    struct pixel  {
+        unsigned char red;
+        unsigned char green;
+        unsigned char blue;
+        unsigned char alpha;
+    }value;
+    unsigned char raw[4];
+};
+
 /*
 Objective : load bmp image
 Input : file_name : char * : file name

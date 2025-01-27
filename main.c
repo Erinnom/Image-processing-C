@@ -7,6 +7,11 @@ Objective : load image, edit image and save edited image.
 #include "ti.h"
 #include "math.h"
 
+
+/*
+Objective : Turn a color image to a grayscale image
+Input : struct image : image
+*/
 void grayscale(union image *image) {
     for (int i = 0; i < image->bmp.width; i++){
         for(int j = 0; j < image->bmp.height; j++){
@@ -20,6 +25,11 @@ void grayscale(union image *image) {
     }
 }
 
+
+/*
+Objective : add noise to an image
+Input : struct image : image
+*/
 void noise(union image *image,float weight) {
     srand(time(NULL));
     for (int i = 0; i < image->bmp.width; i++){
@@ -35,11 +45,13 @@ void noise(union image *image,float weight) {
     }
 }
 
+
+
 int main(int argc, char **argv){
     // Tests
     union image image1;
-    load_bmp_image("chiffrement.bmp",&image1);
-    printf("\n");
+    //load_bmp_image("chiffrement.bmp",&image1);
+    new_bmp_image(&image1, 300, 200, 8);
     noise(&image1,0.6);
     save_bmp_image("new_image1.bmp", &image1);
 }
