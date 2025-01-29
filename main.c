@@ -34,7 +34,6 @@ void noise(union image *image,float weight) {
     srand(time(NULL));
     for (int i = 0; i < image->bmp.width; i++){
         for(int j = 0; j < image->bmp.height; j++){
-
             struct pixel pixel;
             get_pixel(image,i,j,&pixel);
             pixel.blue = min( pixel.blue+(rand()%0xff)*weight,255);
@@ -45,12 +44,25 @@ void noise(union image *image,float weight) {
     }
 }
 
+/*
+Objective : fill the image with a color
+Input : - struct image : image
+        - struct pixel : color
+*/
+void fill(union image *image, struct pixel color) {
+    for (int i = 0; i < image->bmp.width; i++){
+        for(int j = 0; j < image->bmp.height; j++){
+            set_pixel(image,i,j,&color);
+        }
+    }
+}
+
 
 int main(int argc, char **argv){
     // Tests
     union image image1;
-    load_bmp_image("test.bmp",&image1);
-    //new_bmp_image(&image1, 300, 200, 8);
-    noise(&image1,0.6);
+    load_bmp_image("chiffrement.bmp",&image1);
+    new_bmp_image(&image1, 300, 200, 16);
+    fill(&image1, (struct pixel){125,125,125});
     save_bmp_image("new_image1.bmp", &image1);
 }

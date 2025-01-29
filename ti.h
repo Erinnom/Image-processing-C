@@ -75,10 +75,9 @@ Input : x : int : x coordinate
 Output : int : index
 */
 int coord_to_index(int x, int y, union image *image) {
-    short padding = (4- (image->bmp.width*image->bmp.bits_per_pixel)%4)%4;
-    return image->bmp.offset + 2 + (image->bmp.height - 1 - y)*(image->bmp.width + padding)*image->bmp.bits_per_pixel/8 + x*image->bmp.bits_per_pixel/8;
+    short padding = (4-( image->bmp.width*image->bmp.bits_per_pixel/8)%4)%4;
+    return image->bmp.offset + 2 + (image->bmp.height - 1 - y)*(image->bmp.width)*image->bmp.bits_per_pixel/8 + x*image->bmp.bits_per_pixel/8 + padding*(image->bmp.height -1 - y);
 }
-
 /*
 Objective : get pixel value from image
 Input : image : union bmp_image * : image
@@ -105,10 +104,17 @@ Input : image : union bmp_image * : image
 */
 void set_pixel(union image *image, int x, int y,struct pixel *pixel) {
     unsigned int offset = coord_to_index(x, y,image);
-    image->raw[offset] = pixel->blue;
-    image->raw[offset + 1] = pixel->green;
-    image->raw[offset + 2] = pixel->red;
-    if (image->bmp.bits_per_pixel == 32) {
+    if (image->bmp.bits_per_pixel >= 8) {
+        image->raw[offset] = pixel->blue;
+    }
+    if (image->bmp.bits_per_pixel >= 16) {
+        image->raw[offset] = pixel->blue;
+        image->raw[offset + 1] = pixel->green;
+    }
+    if (image->bmp.bits_per_pixel >= 24) {
+        image->raw[offset + 2] = pixel->red;
+    }
+    if (image->bmp.bits_per_pixel >= 32) {
         image->raw[offset + 3] = pixel->alpha;
     }
 }
