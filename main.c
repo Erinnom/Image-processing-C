@@ -46,12 +46,11 @@ void noise(union image *image,float weight) {
 }
 
 
-
 int main(int argc, char **argv){
     // Tests
     union image image1;
-    //load_bmp_image("chiffrement.bmp",&image1);
-    new_bmp_image(&image1, 300, 200, 8);
+    load_bmp_image("test.bmp",&image1);
+    //new_bmp_image(&image1, 300, 200, 8);
     noise(&image1,0.6);
     save_bmp_image("new_image1.bmp", &image1);
 }

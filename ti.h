@@ -48,12 +48,7 @@ struct pixel {
 };
 
 union pixel2 {
-    struct pixel  {
-        unsigned char red;
-        unsigned char green;
-        unsigned char blue;
-        unsigned char alpha;
-    }value;
+    struct pixel value;
     unsigned char raw[4];
 };
 
@@ -80,7 +75,8 @@ Input : x : int : x coordinate
 Output : int : index
 */
 int coord_to_index(int x, int y, union image *image) {
-    return image->bmp.offset + 2 + (image->bmp.height - 1 - y)*image->bmp.width*image->bmp.bits_per_pixel/8 + x*image->bmp.bits_per_pixel/8;
+    short padding = (4- (image->bmp.width*image->bmp.bits_per_pixel)%4)%4;
+    return image->bmp.offset + 2 + (image->bmp.height - 1 - y)*(image->bmp.width + padding)*image->bmp.bits_per_pixel/8 + x*image->bmp.bits_per_pixel/8;
 }
 
 /*
